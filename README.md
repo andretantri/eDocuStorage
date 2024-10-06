@@ -1,4 +1,4 @@
-# **Sistem Penyimpanan Dokumen Akreditasi**
+# **Sistem Penyimpanan Dokumen**
 
 Sistem Penyimpanan Dokumen adalah aplikasi berbasis web yang dirancang untuk membantu pengelolaan dokumen. Sistem ini menyediakan fitur manajemen folder, pencarian dokumen berbasis tag, dan penyusunan hirarki folder yang fleksibel. Dengan sistem ini, pengguna dapat dengan mudah mengorganisir, mengakses, dan mengelola dokumen yang diperlukan.
 
