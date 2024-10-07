@@ -40,6 +40,7 @@
             $('#tabelData').DataTable({
                 processing: true,
                 serverSide: true,
+                responsive: true,
                 ajax: {
                     url: '{{ route('admin.get.user') }}',
                     type: 'GET',
@@ -165,7 +166,7 @@
                         <a href="{{ route('admin.user.create') }}" class="btn btn-primary">Tambah Data</a>
                     </div>
                 </div>
-                <div class="block-content block-content-full">
+                <div class="block-content block-content-full" style="overflow: auto">
 
                     <div class="progress push" style="height: 10px; display: none;" role="progressbar" aria-valuenow="0"
                         aria-valuemin="0" aria-valuemax="100">

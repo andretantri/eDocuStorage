@@ -40,6 +40,7 @@
             $('#tabelData').DataTable({
                 processing: true,
                 serverSide: true,
+                responsive: true,
                 ajax: {
                     url: '{{ route('admin.get.kriteria') }}',
                     type: 'GET',
@@ -78,20 +79,12 @@
                         searchable: false,
                         render: function(data, type, row) {
                             let questionUrl =
-                                '{{ route('admin.folder.tabel', [':id', ':folder']) }}'.replace(
+                                '{{ route('admin.folder.view', [':id', ':folder']) }}'.replace(
                                     ':id', data.id).replace(
                                     ':folder', '0');
                             var userRole =
                                 "{{ Auth::user()->role }}";
                             return `
-                                ${userRole === 'admin' ? `
-                                            <a href="{{ route('admin.kriteria.edit', ['id' => ':id']) }}" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn btn-sm btn-danger delete-btn" data-id="${data.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        ` : ''}
                                 <a href="${questionUrl}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-eye"></i>
                                 </a>
