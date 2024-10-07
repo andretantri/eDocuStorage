@@ -7,6 +7,8 @@ use App\Http\Controllers\RegisterController as RegisterController;
 
 use App\Http\Controllers\Admin\KriteriaController as KriteriaAdmin;
 use App\Http\Controllers\Admin\FolderController as FolderAdmin;
+use App\Http\Controllers\Admin\UserManageController as UserManage;
+use App\Http\Controllers\Admin\PencarianController as PencarianAdmin;
 
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,21 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::delete('/kriteria-delete/{id}', [KriteriaAdmin::class, 'destroy'])->name('admin.kriteria.delete');
 
     Route::get('/folder/kriteria/{id}/{folder}', [FolderAdmin::class, 'tabel'])->name('admin.folder.tabel');
-    Route::get('/folder/kriteria-tambah/{id}', [FolderAdmin::class, 'pertanyaan'])->name('admin.folder.list');
     Route::post('/folder/kriteria-store/{id}', [FolderAdmin::class, 'store'])->name('admin.folder.store');
+    Route::post('/file/kriteria-store/{id}', [FolderAdmin::class, 'upload'])->name('admin.file.upload');
+    Route::get('/file/stream/{id}', [FolderAdmin::class, 'streamFile'])->name('admin.file.stream');
+    Route::delete('/folder/delete/{id}', [FolderAdmin::class, 'destroy'])->name('admin.folder.delete');
+    Route::delete('/file/delete/{id}', [FolderAdmin::class, 'destroyFile'])->name('admin.file.delete');
+
+    Route::get('/user', [UserManage::class, 'index'])->name('admin.user');
+    Route::get('/user-tambah', [UserManage::class, 'create'])->name('admin.user.create');
+    Route::get('/get-user', [UserManage::class, 'getData'])->name('admin.get.user');
+    Route::post('/user-store', [UserManage::class, 'store'])->name('admin.user.store');
+    Route::get('/user-edit/{id}', [UserManage::class, 'edit'])->name('admin.user.edit');
+    Route::put('/user-update/{id}', [UserManage::class, 'update'])->name('admin.user.update');
+    Route::delete('/user-delete/{id}', [UserManage::class, 'destroy'])->name('admin.user.delete');
+
+    Route::get('/search', [PencarianAdmin::class, 'index'])->name('admin.search');
+    Route::get('/pencarian', [PencarianAdmin::class, 'search'])->name('admin.pencarian');
+    Route::get('/folder/view/{id}/{folder}', [FolderAdmin::class, 'view'])->name('admin.folder.view');
 });

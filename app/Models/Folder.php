@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Folder extends Model
 {
-    protected $fillable = ['criteria_id', 'name', 'parent_id', 'tag_folder'];
+    protected $fillable = ['criteria_id', 'name', 'parent_id', 'tag_folder', 'folder_path'];
 
     /**
      * Relasi ke model Criteria.
@@ -39,13 +39,5 @@ class Folder extends Model
     public function documents()
     {
         return $this->hasMany(Document::class);
-    }
-
-    /**
-     * Relasi ke model Tag melalui FolderTag.
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'folder_tag');
     }
 }

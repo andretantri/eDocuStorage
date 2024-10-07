@@ -99,9 +99,9 @@
                                 User Options
                             </div>
                             <div class="p-2">
-                                {{-- <a class="dropdown-item" href="be_pages_generic_profile.html">
-                                    <i class="far fa-fw fa-user me-1"></i> Profile
-                                </a> --}}
+                                <a class="dropdown-item" href="#">
+                                    <i class="far fa-fw fa-user me-1"></i> Role : {{ ucwords(Auth::user()->role) }}
+                                </a>
                                 <div role="separator" class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();

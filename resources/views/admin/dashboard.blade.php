@@ -37,6 +37,9 @@
                         <li class="list-group-item">
                             <strong>Laravel Version:</strong> {{ app()->version() }}
                         </li>
+                        <li class="list-group-item">
+                            <strong>Storage:</strong> Google Drive V3
+                        </li>
                     </ul>
                 </div>
             </div>

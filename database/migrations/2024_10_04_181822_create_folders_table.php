@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('criteria_id')->constrained()->onDelete('cascade');  // Relasi ke criteria
             $table->string('name');
             $table->string('tag_folder');
+            $table->string('folder_path');
             $table->foreignId('parent_id')->nullable()->constrained('folders')->onDelete('cascade');  // Relasi ke folder parent
             $table->timestamps();  // created_at dan updated_at
         });

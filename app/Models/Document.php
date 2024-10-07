@@ -10,7 +10,7 @@ class Document extends Model
 
     use HasFactory;
 
-    protected $fillable = ['folder_id', 'name', 'path', 'google_drive_id', 'description'];
+    protected $fillable = ['folder_id', 'name', 'google_drive_id', 'tag', 'description'];
 
     /**
      * Relasi ke model Folder.
@@ -18,13 +18,5 @@ class Document extends Model
     public function folder()
     {
         return $this->belongsTo(Folder::class);
-    }
-
-    /**
-     * Relasi ke model Tag melalui DocumentTag.
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'document_tag');
     }
 }

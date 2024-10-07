@@ -1,8 +1,8 @@
 @extends('layouts.full')
 
-@section('title', 'Kriteria ')
+@section('title', 'User Manage ')
 
-@section('content-bc', 'Data Kriteria ')
+@section('content-bc', 'Data Pengguna ')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('template/assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css') }}">
@@ -41,7 +41,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{{ route('admin.get.kriteria') }}',
+                    url: '{{ route('admin.get.user') }}',
                     type: 'GET',
                 },
                 dataSrc: function(json) {
@@ -68,8 +68,15 @@
                         name: 'name'
                     },
                     {
-                        data: 'description',
-                        name: 'description'
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'role',
+                        name: 'role',
+                        render: function(data, type, row) {
+                            return `<span class="badge bg-primary">${data}</span>`;
+                        }
                     },
                     {
                         data: null,
@@ -77,25 +84,14 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            let questionUrl =
-                                '{{ route('admin.folder.tabel', [':id', ':folder']) }}'.replace(
-                                    ':id', data.id).replace(
-                                    ':folder', '0');
-                            var userRole =
-                                "{{ Auth::user()->role }}";
                             return `
-                                ${userRole === 'admin' ? `
-                                            <a href="{{ route('admin.kriteria.edit', ['id' => ':id']) }}" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn btn-sm btn-danger delete-btn" data-id="${data.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        ` : ''}
-                                <a href="${questionUrl}" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            `.replace(':id', data.id);
+                            <a href="{{ route('admin.user.edit', ['id' => ':id']) }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="${data.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        `.replace(':id', data.id);
                         }
                     }
                 ]
@@ -113,7 +109,7 @@
                     confirmButtonText: 'Ya, Lanjutkan Hapus!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        let deleteUrl = '{{ route('admin.kriteria.delete', ':id') }}';
+                        let deleteUrl = '{{ route('admin.user.delete', ':id') }}';
                         deleteUrl = deleteUrl.replace(':id', id);
                         $.ajax({
                             url: deleteUrl,
@@ -126,7 +122,7 @@
                                     .reload();
                                 Swal.fire(
                                     'Deleted!',
-                                    'Data kriteria Berhasil Dihapus.',
+                                    'Data Pengguna Berhasil Dihapus.',
                                     'success'
                                 );
 
@@ -164,12 +160,10 @@
             <!-- Pie Chart -->
             <div class="block block-rounded">
                 <div class="block-header block-header-default">
-                    <h3 class="block-title">Data Kriteria</h3>
-                    @if (Auth::user()->role == 'admin')
-                        <div class="block-options">
-                            <a href="{{ route('admin.kriteria.create') }}" class="btn btn-primary">Tambah Data</a>
-                        </div>
-                    @endif
+                    <h3 class="block-title">Data Pengguna</h3>
+                    <div class="block-options">
+                        <a href="{{ route('admin.user.create') }}" class="btn btn-primary">Tambah Data</a>
+                    </div>
                 </div>
                 <div class="block-content block-content-full">
 
@@ -181,8 +175,9 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Kriteria</th>
-                                <th>Keterangan</th>
+                                <th>Nama Pengguna</th>
+                                <th>Email</th>
+                                <th>Role</th>
                                 <th width='20%'>Actions</th>
                             </tr>
                         </thead>

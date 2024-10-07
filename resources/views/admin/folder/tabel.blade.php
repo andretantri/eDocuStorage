@@ -46,6 +46,91 @@
             });
         </script>
     @endif
+    <script>
+        $(document).ready(function() {
+            $('#tabelData').on('click', '.delete-folder-btn', function() {
+                const id = $(this).data('id');
+                Swal.fire({
+                    title: 'Yakin ingin menghapus data ini?',
+                    text: "Anda tidak akan dapat mengembalikannya!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Lanjutkan Hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let deleteUrl = '{{ route('admin.folder.delete', ':id') }}';
+                        deleteUrl = deleteUrl.replace(':id', id);
+                        $.ajax({
+                            url: deleteUrl,
+                            type: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                window.location.reload();
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Data kriteria Berhasil Dihapus.',
+                                    'success'
+                                );
+
+                            },
+                            error: function(response) {
+                                Swal.fire(
+                                    'Failed!',
+                                    'Gagal Hapus data.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            $('#tabelDataFile').on('click', '.delete-file-btn', function() {
+                const id = $(this).data('id');
+                Swal.fire({
+                    title: 'Yakin ingin menghapus data ini?',
+                    text: "Anda tidak akan dapat mengembalikannya!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Lanjutkan Hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let deleteUrl = '{{ route('admin.file.delete', ':id') }}';
+                        deleteUrl = deleteUrl.replace(':id', id);
+                        $.ajax({
+                            url: deleteUrl,
+                            type: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                window.location.reload();
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Data kriteria Berhasil Dihapus.',
+                                    'success'
+                                );
+
+                            },
+                            error: function(response) {
+                                Swal.fire(
+                                    'Failed!',
+                                    'Gagal Hapus data.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
 
 @section('content-isi')
@@ -93,10 +178,11 @@
                                 <th>Sub Folder</th>
                                 <th>Tag</th>
                                 <th>Jumlah</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($data != null)
+                            @if ($data->count() != 0)
                                 @foreach ($data as $index => $content)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
@@ -116,14 +202,20 @@
                                             @endif
                                         </td>
                                         <td>
-                                            File Dalam Folder : {{ $content->documents->count() }} <br>
-                                            Sub Folder : {{ $content->subfolders->count() }}
+                                            Sub Folder : {{ $content->subfolders->count() }}<br>
+                                            File Dalam Folder : {{ $content->documents->count() }}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger delete-folder-btn"
+                                                data-id="{{ $content->id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="4" align="center">Belum Ada Data</td>
+                                    <td colspan="5" align="center">Belum Ada Data</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -148,29 +240,28 @@
                             aria-valuemin="0" aria-valuemax="100">
                             <div class="progress-bar" style="width: 0%;"></div>
                         </div>
-                        <table id="tabelData" class="display table table-bordered table-striped table-vcenter">
+                        <table id="tabelDataFile" class="display table table-bordered table-striped table-vcenter">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Sub Folder</th>
+                                    <th>File</th>
                                     <th>Tag</th>
-                                    <th>Jumlah</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($data != null)
-                                    @foreach ($data as $index => $content)
+                                @if ($file->count() != 0)
+                                    @foreach ($file as $index => $dFile)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                <a
-                                                    href="{{ route('admin.folder.tabel', ['id' => $kriteria->id, 'folder' => $content->id]) }}">
-                                                    {{ $content->name }}
+                                                <a href="{{ route('admin.file.stream', ['id' => $dFile->id]) }}">
+                                                    {{ $dFile->name }}
                                                 </a>
                                             </td>
                                             <td>
-                                                @if ($content->tag_folder)
-                                                    @foreach (explode(',', $content->tag_folder) as $tag)
+                                                @if ($dFile->tag)
+                                                    @foreach (explode(',', $dFile->tag) as $tag)
                                                         <span class="badge bg-primary">{{ $tag }}</span>
                                                     @endforeach
                                                 @else
@@ -178,8 +269,10 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                File Dalam Folder : {{ $content->documents->count() }} <br>
-                                                Sub Folder : {{ $content->subfolders->count() }}
+                                                <button class="btn btn-sm btn-danger delete-file-btn"
+                                                    data-id="{{ $dFile->id }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -252,7 +345,8 @@
                 <div class="block block-rounded">
                     <div class="block-content block-content-full">
                         <h2 class="content-heading pt-0">Upload File</h2>
-                        <form action="{{ route('admin.kriteria.store') }}" method="POST">
+                        <form action="{{ route('admin.file.upload', ['id' => $idf]) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="row push">
                                 <div class="col-lg-12 col-xl-12 overflow-hidden">
@@ -265,7 +359,20 @@
                                             class="form-control" required>
                                     </div>
                                     <div class="mb-4">
-                                        <button class="btn btn-primary" type="submit">Simpan</button>
+                                        <label class="form-label">Tag<code>*</code></label>
+                                        <input type="text" name="tag" placeholder="Masukkan Tag File"
+                                            class="form-control" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Deskripsi<code>*</code></label>
+                                        <textarea name="description" rows="3" placeholder="Masukkan Deskripsi File" class="form-control" required></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Pilih File<code>*</code></label>
+                                        <input type="file" name="file" class="form-control" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <button class="btn btn-primary" type="submit">Upload</button>
                                     </div>
                                 </div>
                             </div>

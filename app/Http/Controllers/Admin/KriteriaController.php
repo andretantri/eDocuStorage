@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Criteria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KriteriaController extends Controller
 {
@@ -51,6 +52,8 @@ class KriteriaController extends Controller
             'description' => $request->description,
         ]);
 
+        Storage::disk('google')->makeDirectory($request->name);
+
         return redirect()->route('admin.kriteria')->with('success', 'Data Berhasil Ditambahkan!');
     }
 
@@ -76,6 +79,23 @@ class KriteriaController extends Controller
     {
 
         $data = Criteria::find($id);
+
+        // Mendapatkan semua file dari direktori lama
+        $files = Storage::disk('google')->files($data->name);
+
+        // Salin setiap file ke direktori baru
+        foreach ($files as $file) {
+            $newFilePath = str_replace($data->name, $request->name, $file);
+            Storage::disk('google')->copy($file, $newFilePath);
+        }
+
+        // Jika ingin menghapus direktori lama dan isi setelah menyalin, uncomment baris berikut
+        if (count($files) == 0) {
+            Storage::disk('google')->makeDirectory($request->name);
+        }
+
+        Storage::disk('google')->deleteDirectory($data->name);
+
 
         $data->name = $request->name;
         $data->description = $request->description;

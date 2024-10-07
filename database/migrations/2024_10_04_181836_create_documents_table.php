@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();  // Tipe BIGINT AUTO_INCREMENT
             $table->foreignId('folder_id')->constrained()->onDelete('cascade');  // Relasi ke folder
             $table->string('name');
-            $table->string('path');  // Path file di server (jika diperlukan)
             $table->string('google_drive_id');  // ID file di Google Drive
+            $table->string('tag');
             $table->text('description')->nullable();
             $table->timestamps();  // created_at dan updated_at
         });
