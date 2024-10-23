@@ -79,7 +79,7 @@
                         searchable: false,
                         render: function(data, type, row) {
                             let questionUrl =
-                                '{{ route('admin.folder.view', [':id', ':folder']) }}'.replace(
+                                '{{ route('admin.folder.tabel', [':id', ':folder']) }}'.replace(
                                     ':id', data.id).replace(
                                     ':folder', '0');
                             var userRole =
