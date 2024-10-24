@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();  // Tipe BIGINT AUTO_INCREMENT
             $table->foreignId('folder_id')->constrained()->onDelete('cascade');  // Relasi ke folder
+            $table->integer('criteria_id');
             $table->string('name');
             $table->string('google_drive_id');  // ID file di Google Drive
             $table->string('tag');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Criteria;
+use App\Models\Folder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,22 +17,35 @@ class KriteriaController extends Controller
 
     public function getData(Request $request)
     {
-        $data = Criteria::query();
+        // Mulai query dengan eager load relasi 'getFolder'
+        $data = Criteria::with('folders'); // Eager load folders
 
+        // Hitung total record sebelum filtering
         $recordsTotal = $data->count();
 
+        // Jika ada pencarian
         if ($request->has('search') && !empty($request->search['value'])) {
             $searchValue = $request->search['value'];
             $data->where('name', 'like', '%' . $searchValue . '%');
         }
 
+        // Hitung record setelah filtering
         $recordsFiltered = $data->count();
 
+        // Pagination: skip dan take berdasarkan DataTables request
         $data->skip($request->start ?? 0)
             ->take($request->length ?? $recordsTotal);
 
+        // Ambil data akhir
         $data = $data->get();
 
+        foreach ($data as $c) {
+            $specificFolder = $c->getFolder(); // Mengambil folder khusus
+            $folderId = $specificFolder ? $specificFolder->id : null; // Ambil ID folder
+            // Proses lebih lanjut
+        }
+
+        // Kembalikan data dalam format JSON untuk DataTables
         return response()->json([
             'draw' => intval($request->draw ?? 1),
             'recordsTotal' => $recordsTotal,
@@ -40,6 +54,7 @@ class KriteriaController extends Controller
         ]);
     }
 
+
     public function create()
     {
         return view('admin.kriteria.create');
@@ -47,9 +62,17 @@ class KriteriaController extends Controller
 
     public function store(Request $request)
     {
-        Criteria::create([
+        $criteria = Criteria::create([
             'name' => $request->name,
             'description' => $request->description,
+        ]);
+
+        Folder::create([
+            'criteria_id' => $criteria->id,
+            'name' => $request->name,
+            'tag_folder' => $request->name,
+            'folder_path' => $request->name,
+            'parent_id' => null,
         ]);
 
         Storage::disk('google')->makeDirectory($request->name);

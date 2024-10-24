@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\KriteriaController as KriteriaAdmin;
 use App\Http\Controllers\Admin\FolderController as FolderAdmin;
 use App\Http\Controllers\Admin\UserManageController as UserManage;
 use App\Http\Controllers\Admin\PencarianController as PencarianAdmin;
+use App\Http\Controllers\Admin\BerkasController as BerkasAdmin;
 
 use Illuminate\Support\Facades\Route;
 
@@ -58,4 +59,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/search', [PencarianAdmin::class, 'index'])->name('admin.search');
     Route::get('/pencarian', [PencarianAdmin::class, 'search'])->name('admin.pencarian');
     Route::get('/folder/view/{id}/{folder}', [FolderAdmin::class, 'view'])->name('admin.folder.view');
+
+    Route::get('/scan-berkas/{id}/{folder}', [BerkasAdmin::class, 'view'])->name('admin.berkas.view');
+    Route::post('/scan-berkas/store/{id}', [BerkasAdmin::class, 'simpan'])->name('admin.berkas.upload');
+    Route::get('/scan-berkas/edit/{id}', [BerkasAdmin::class, 'edit'])->name('admin.berkas.edit');
+    Route::post('/scan-berkas/update/{id}', [BerkasAdmin::class, 'update'])->name('admin.berkas.update');
+    Route::delete('/scan-berkas/file/delete/{id}', [BerkasAdmin::class, 'deleteFile'])->name('admin.berkas-file.delete');
+    Route::delete('/scan-berkas/folder/delete/{id}', [BerkasAdmin::class, 'deleteFolder'])->name('admin.berkas-folder.delete');
+    Route::get('/scan-berkas/stream/{id}', [BerkasAdmin::class, 'streamFile'])->name('admin.berkas.stream');
 });

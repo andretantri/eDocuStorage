@@ -78,15 +78,26 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            let questionUrl =
-                                '{{ route('admin.folder.view', [':id', ':folder']) }}'.replace(
-                                    ':id', data.id).replace(
-                                    ':folder', '0');
+                            let upload =
+                                '{{ route('admin.folder.tabel', [':id', ':folder']) }}'.replace(
+                                    ':id', data.id).replace(':folder', data.folders && data.folders
+                                    .length > 0 ? data
+                                    .folders[0].id : '');
+
+                            let scan = '{{ route('admin.berkas.view', [':id', ':folder']) }}'
+                                .replace(':id', data.id)
+                                .replace(':folder', data.folders && data.folders.length > 0 ? data
+                                    .folders[0].id : '');
+
+
                             var userRole =
                                 "{{ Auth::user()->role }}";
                             return `
-                                <a href="${questionUrl}" class="btn btn-sm btn-primary">
+                                <a href="${upload}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="${scan}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-search-plus"></i>
                                 </a>
                             `.replace(':id', data.id);
                         }

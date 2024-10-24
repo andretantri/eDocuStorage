@@ -111,6 +111,7 @@ class FolderController extends Controller
 
         // Simpan informasi file ke database (jika perlu)
         $document = Document::create([
+            'criteria_id' => $folder->criteria->id,
             'name' => $filename,
             'description' => $request->input('description'),
             'tag' => $request->input('tag'),

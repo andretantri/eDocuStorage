@@ -10,7 +10,7 @@ class Document extends Model
 
     use HasFactory;
 
-    protected $fillable = ['folder_id', 'name', 'google_drive_id', 'tag', 'description'];
+    protected $fillable = ['folder_id', 'criteria_id', 'name', 'google_drive_id', 'tag', 'description'];
 
     /**
      * Relasi ke model Folder.
