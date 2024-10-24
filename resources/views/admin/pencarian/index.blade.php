@@ -77,13 +77,13 @@
                                 "{{ Auth::user()->role }}";
                             return `
                                 ${userRole === 'admin' ? `
-                                            <a href="{{ route('admin.kriteria.edit', ['id' => ':id']) }}" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn btn-sm btn-danger delete-btn" data-id="${data.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                            ` : ''}
+                                                <a href="{{ route('admin.kriteria.edit', ['id' => ':id']) }}" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data.id}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                                ` : ''}
                                 <a href="${questionUrl}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-eye"></i>
                                 </a>
@@ -124,7 +124,7 @@
             </form>
             <div id="searchResults"></div>
         </div>
-        <div class="block block-rounded">
+        <div class="block block-rounded data-kriteria">
 
             <div class="block-content block-content-full">
                 <div class="block-header block-header-default">
@@ -200,6 +200,11 @@
                     // Jika tidak ada hasil
                     if (!data.folders.length && !data.files.length) {
                         resultsHtml = '<p>Tidak ada hasil ditemukan.</p>';
+                        document.querySelector('.data-kriteria').classList.remove(
+                        'd-none'); // Show the "no data" div
+                    } else {
+                        document.querySelector('.data-kriteria').classList.add(
+                        'd-none'); // Hide the "no data" div if data exists
                     }
 
                     document.getElementById('searchResults').innerHTML = resultsHtml;
