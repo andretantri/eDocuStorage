@@ -131,6 +131,20 @@
             });
         });
     </script>
+    <script>
+        document.getElementById('copyTag').addEventListener('click', function() {
+            // Ambil nilai dari inputTag
+            let tagValue = document.getElementById('inputTag').value;
+
+            // Ambil semua input dengan class "tag-file"
+            let tagInputs = document.querySelectorAll('.tag-file');
+
+            // Loop melalui setiap input dan set nilai tagValue ke dalamnya
+            tagInputs.forEach(function(input) {
+                input.value = tagValue;
+            });
+        });
+    </script>
 @endsection
 
 @section('content-isi')
@@ -344,15 +358,33 @@
                         @csrf
                         <input type="hidden" name="type" value="file">
                         <input type="hidden" name="folderid" value="{{ $idf }}">
+
                         <div class="row push">
                             <div class="col-lg-12 col-xl-12 overflow-hidden">
-                                <div class="alert alert-info" role="alert">
-                                    Tag untuk mempermudah pencarian folder. Gunakan koma (,) untuk memisahkan beberapa
-                                    tag.
-                                </div>
                                 <p class="text-muted">
                                     (<code>*</code>) Wajib Diisi<br>
                                 </p>
+
+                                <div class="alert alert-info" role="alert">
+                                    Apabila tag yang digunakan sama, masukkan pada tag dibawah lalu klik copy ke semua tag
+                                </div>
+
+                                <!-- Input baru untuk memasukkan tag -->
+                                <div class="row mb-4">
+                                    <div class="col-md-8">
+                                        <input type="text" id="inputTag" placeholder="Masukkan Tag untuk disalin"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" id="copyTag" class="btn btn-success">Copy ke semua
+                                            Tag</button>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info" role="alert">
+                                    Tag untuk mempermudah pencarian folder. Gunakan koma (,) untuk memisahkan beberapa tag.
+                                </div>
+
                                 @foreach ($belumAdaFile as $k => $file)
                                     <div class="row align-items-center">
                                         <div class="col-md-1 mb-4 text-center">
@@ -371,10 +403,11 @@
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">Tag<code>*</code></label>
                                             <input type="text" name="tag[]" placeholder="Masukkan Tag File"
-                                                class="form-control" required>
+                                                class="form-control tag-file" required>
                                         </div>
                                     </div>
                                 @endforeach
+
                                 <div class="row">
                                     <div class="col-md-12 mb-4 text-end">
                                         <button class="btn btn-primary" type="submit">Hubungkan</button>

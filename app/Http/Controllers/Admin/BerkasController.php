@@ -65,8 +65,8 @@ class BerkasController extends Controller
         $folderGd = Storage::disk('google')->directories($pathFl);
         $fileGd = Storage::disk('google')->files($pathFl);
 
-        $prbelumAdaFolder = $this->checkAndUnset($folderGd, $listAllFold);
-        $prbelumAdaFile = $this->checkAndUnset($fileGd, $listAllDoc);
+        $belumAdaFolder = $this->checkAndUnset($folderGd, $listAllFold);
+        $belumAdaFile = $this->checkAndUnset($fileGd, $listAllDoc);
 
         return view('admin.berkas.tabel', compact('data', 'statusKriteria', 'breadcrumbs', 'idf', 'kriteria', 'folder', 'allFolders', 'file', 'belumAdaFolder', 'belumAdaFile', 'pathFl'));
     }

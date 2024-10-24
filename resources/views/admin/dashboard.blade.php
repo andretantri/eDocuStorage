@@ -26,7 +26,7 @@
                             <strong>Nama Aplikasi:</strong> eDocuStorage
                         </li>
                         <li class="list-group-item">
-                            <strong>Versi Aplikasi:</strong> 1.0.0
+                            <strong>Versi Aplikasi:</strong> 1.2.0
                         </li>
                         <li class="list-group-item">
                             <strong>PHP Version:</strong> {{ phpversion() }}
