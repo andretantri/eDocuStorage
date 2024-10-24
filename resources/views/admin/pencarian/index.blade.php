@@ -77,13 +77,13 @@
                                 "{{ Auth::user()->role }}";
                             return `
                                 ${userRole === 'admin' ? `
-                                                                            <a href="{{ route('admin.kriteria.edit', ['id' => ':id']) }}" class="btn btn-sm btn-primary">
-                                                                                <i class="fas fa-edit"></i>
-                                                                            </a>
-                                                                            <button class="btn btn-sm btn-danger delete-btn" data-id="${data.id}">
-                                                                                <i class="fas fa-trash"></i>
-                                                                            </button>
-                                                                        ` : ''}
+                                            <a href="{{ route('admin.kriteria.edit', ['id' => ':id']) }}" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-danger delete-btn" data-id="${data.id}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            ` : ''}
                                 <a href="${questionUrl}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-eye"></i>
                                 </a>
@@ -166,40 +166,46 @@
 
                     // Tampilkan hasil folder
                     if (data.folders.length) {
-                        resultsHtml += '<h3>Folders</h3><ul class="list-group">';
+                        resultsHtml += '<h3>Folders</h3><ul class="list-group mt-4">';
                         data.folders.forEach(folder => {
                             resultsHtml += `
-                            <li class="list-group-item">
-                                <a href="{{ route('admin.folder.view', ['id' => 'CRITERIA_ID', 'folder' => 'FOLDER_ID']) }}"
-                                   onclick="this.href=this.href.replace('CRITERIA_ID', ${folder.criteria_id}).replace('FOLDER_ID', ${folder.id});">
-                                   ${folder.name} (Tag: ${folder.tag_folder})
-                                </a>
-                            </li>`;
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ route('admin.folder.view', ['id' => 'CRITERIA_ID', 'folder' => 'FOLDER_ID']) }}"
+                       onclick="this.href=this.href.replace('CRITERIA_ID', ${folder.criteria_id}).replace('FOLDER_ID', ${folder.id});">
+                       ${folder.name}
+                    </a>
+                    <span class="text-muted">${folder.folder_path}</span>
+                </li>`;
                         });
                         resultsHtml += '</ul>';
                     }
 
                     // Tampilkan hasil file
                     if (data.files.length) {
-                        resultsHtml += '<h3>Files</h3><ul class="list-group">';
+                        // Tambahkan margin atas (mt-4) untuk memberi jarak dengan folder
+                        resultsHtml += '<h3 class="mt-4">Files</h3><ul class="list-group mt-4">';
                         data.files.forEach(file => {
                             resultsHtml += `
-                            <li class="list-group-item">
-                                <a href="{{ route('admin.file.stream', ['id' => 'FILE_ID']) }}"
-                                   onclick="this.href=this.href.replace('FILE_ID', ${file.id});">
-                                   ${file.name} (Tag: ${file.tag})
-                                </a>
-                            </li>`;
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ route('admin.file.stream', ['id' => 'FILE_ID']) }}"
+                       onclick="this.href=this.href.replace('FILE_ID', ${file.id});">
+                       ${file.name}
+                    </a>
+                    <span class="text-muted">${file.google_drive_id}</span>
+                </li>`;
                         });
                         resultsHtml += '</ul>';
                     }
 
+                    // Jika tidak ada hasil
                     if (!data.folders.length && !data.files.length) {
                         resultsHtml = '<p>Tidak ada hasil ditemukan.</p>';
                     }
 
                     document.getElementById('searchResults').innerHTML = resultsHtml;
                 });
+
+
         });
     </script>
 @endsection
