@@ -29,6 +29,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password), // Enkripsi password
+            'role' => 'user',
         ]);
 
         // Login otomatis setelah registrasi

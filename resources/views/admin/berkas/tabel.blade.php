@@ -314,6 +314,10 @@
                                         tag.
                                     </div>
                                     @foreach ($belumAdaFolder as $k => $folder)
+                                        @php
+                                            $folder_fl = str_replace($pathFl . '/', '', $folder);
+                                            $tags_fl = strtolower(preg_replace('/^[^)]+\)\s*/', '', $folder_fl));
+                                        @endphp
                                         <div class="row align-items-center">
                                             <div class="col-md-1 mb-4 text-center">
                                                 <label class="form-label" style="font-weight: bold; font-size: 18px;">
@@ -323,15 +327,14 @@
                                             <div class="col-md-5 mb-4">
                                                 <label class="form-label">Nama Folder<code>*</code></label>
                                                 <input type="text" name="name[]" placeholder="Masukkan Nama Folder"
-                                                    class="form-control"
-                                                    value="{{ str_replace($pathFl . '/', '', $folder) }}" readonly>
+                                                    class="form-control" value="{{ $folder_fl }}" readonly>
                                             </div>
                                             <input type="hidden" name="path[]" class="form-control"
                                                 value="{{ $folder }}">
                                             <div class="col-md-6 mb-4">
                                                 <label class="form-label">Tambah Tag Folder<code>*</code></label>
                                                 <input type="text" name="tag_folder[]" placeholder="Masukkan Tag Folder"
-                                                    class="form-control" required>
+                                                    class="form-control" value="{{ $tags_fl }}" required>
                                             </div>
                                         </div>
                                     @endforeach
@@ -386,6 +389,11 @@
                                 </div>
 
                                 @foreach ($belumAdaFile as $k => $file)
+                                    @php
+                                        $file_fi = str_replace($pathFl . '/', '', $file);
+                                        $tags_fi = strtolower(preg_replace('/[.)].*/', '', $file_fi));
+
+                                    @endphp
                                     <div class="row align-items-center">
                                         <div class="col-md-1 mb-4 text-center">
                                             <label class="form-label" style="font-weight: bold; font-size: 18px;">
@@ -396,14 +404,13 @@
                                         <div class="col-md-5 mb-4">
                                             <label class="form-label">Nama File<code>*</code></label>
                                             <input type="text" name="name[]" placeholder="Masukkan Nama File"
-                                                class="form-control" value="{{ str_replace($pathFl . '/', '', $file) }}"
-                                                readonly>
+                                                class="form-control" value="{{ $file_fi }}" readonly>
                                         </div>
                                         <textarea name="path[]" id="path" cols="30" rows="10" hidden>{{ $file }}</textarea>
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">Tag<code>*</code></label>
                                             <input type="text" name="tag[]" placeholder="Masukkan Tag File"
-                                                class="form-control tag-file" required>
+                                                class="form-control tag-file" value="{{ $tags_fi }}" required>
                                         </div>
                                     </div>
                                 @endforeach
